@@ -3,6 +3,7 @@ export default function Home() {
   return (
     <div>
       <UserButton afterSignOutUrl="/" />
+      <p>Test</p>
     </div>
   )
 }
