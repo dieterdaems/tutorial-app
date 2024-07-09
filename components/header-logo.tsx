@@ -5,7 +5,7 @@ export const Headerlogo = () => {
     return (
         <Link href="/">
            <div className="items-center hidden lg:flex">
-                <Image src='/vercel.svg' alt='Logo' height={28} width={28}  />
+                <Image src='/vercel.svg' alt='Logo' height={40} width={40}/>
                 <p className="font-semibold text-white text-2xl ml-2.5" >
                     Finance
                 </p>
