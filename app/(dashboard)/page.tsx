@@ -5,10 +5,9 @@ import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
 
 
 export default function Home() {
-  const { onOpen } = useNewAccount();
   return (
-    <div>
-      <Button onClick={onOpen} >Open Account</Button>
+    <div className="flex items-center justify-center">
+      Welcome
     </div>
   )
 }
