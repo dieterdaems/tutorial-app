@@ -14,7 +14,7 @@ const CattegoriesPage = () => {
     const newCategory = useNewCategory();
     const categoriesQuery = useGetCategories();
     const deleteCategories = useBulkDeleteCategories();
-    const categories = categoriesQuery.data?.data || [];
+    const categories = categoriesQuery.data || [];
 
     const isDisabled = categoriesQuery.isLoading || deleteCategories.isPending;
 
