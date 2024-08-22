@@ -14,7 +14,7 @@ const TransactionsPage = () => {
     const newTransaction = useNewTransaction();
     const transactionsQuery = useGetTransactions();
     const deleteTransactions = useBulkDeleteTransactions();
-    const transactions =transactionsQuery.data?.data || [];
+    const transactions =transactionsQuery.data || [];
 
     const isDisabled = transactionsQuery.isLoading || deleteTransactions.isPending;
 
@@ -56,7 +56,7 @@ const TransactionsPage = () => {
                         }}
                         columns={columns}
                         data={transactions}
-                        filterKey="name"
+                        filterKey="payee"
                         disabled={isDisabled} />
                 </CardContent>
             </Card>

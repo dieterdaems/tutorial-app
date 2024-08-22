@@ -8,8 +8,8 @@ import {
     DropdownMenuTrigger,
  } from "@radix-ui/react-dropdown-menu"
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-accounts";
-import { useDeleteAccount } from "@/features/accounts/api/use-delete-account";
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transactions";
+import { useDeleteTransaction } from "@/features/transactions/api/use-delete-transaction";
 import { useConfirm } from "@/hooks/use-confirm";
 
 type Props = {
@@ -22,8 +22,8 @@ export const Actions = ( {id}: Props) => {
         'This action cannot be undone',
     );
 
-    const deleteMutation = useDeleteAccount(id);
-    const { onOpen } = useOpenAccount();
+    const deleteMutation = useDeleteTransaction(id);
+    const { onOpen } = useOpenTransaction();
 
     const onDelete = async () => {
         const confirmed = await confirm();
