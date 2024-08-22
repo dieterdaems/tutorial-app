@@ -1,37 +1,59 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { AccountForm } from "./account-form";
-import { insertAccountSchema } from "@/db/schema"
+import { TransactionForm } from "./transaction-form";
+import { insertTransactionSchema } from "@/db/schema"
 import { z } from "zod"
-import { useCreateAccount } from "../api/use-create-account";
-import { useOpenAccount } from "../hooks/use-open-accounts";
-import { useGetAccount } from "../api/use-get-account";
-import { useEditAccount } from "../api/use-edit-account";
+import { useOpenTransaction } from "../hooks/use-open-transactions";
+import { useGetTransaction } from "../api/use-get-transaction";
+import { useEditTransaction } from "../api/use-edit-transaction";
+import { useDeleteTransaction } from "../api/use-delete-transaction";
 import { Loader2 } from "lucide-react";
-import { useDeleteAccount } from "../api/use-delete-account";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useGetCategories } from "@/features/categories/api/use-get-categories";
+import { useCreateCategory } from "@/features/categories/api/use-create-category";
+import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { useCreateAccount } from "@/features/accounts/api/use-create-account";
 
 
 
-const formSchema = insertAccountSchema.pick({
-    name: true,
+const formSchema = insertTransactionSchema.omit({
+    id: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
 
-export const EditAccountSheet = () => {
-    const { isOpen, onClose, id } = useOpenAccount();
+export const EditTransactionSheet = () => {
+    const { isOpen, onClose, id } = useOpenTransaction();
 
     const [ConfirmDialog, confirm] = useConfirm(
         'Are you sure?',
         'This action cannot be undone',
     )
 
-    const accountQuery = useGetAccount(id);
-    const editMutation = useEditAccount(id);
-    const deleteMutation = useDeleteAccount(id);
+    const transactionQuery = useGetTransaction(id);
+    const editMutation = useEditTransaction(id);
+    const deleteMutation = useDeleteTransaction(id);
 
-    const isLoading = accountQuery.isLoading;
-    const isPending = editMutation.isPending || deleteMutation.isPending;
+    const categoryQuery = useGetCategories();
+    const categoryMutation = useCreateCategory();
+    const onCreateCategory = (name: string) => categoryMutation.mutate({ name });
+    const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
+        label: category.name,
+        value: category.id,
+    }));
+
+    const accountQuery = useGetAccounts();
+    const accountMutation = useCreateAccount();
+    const onCreateAccount = (name: string) => accountMutation.mutate({ name });
+    const accountOptions = (accountQuery.data ?? []).map((account) => ({
+        label: account.name,
+        value: account.id,
+    }));
+
+
+
+
+    const isLoading = transactionQuery.isLoading || categoryQuery.isLoading || accountQuery.isLoading;
+    const isPending = editMutation.isPending || deleteMutation.isPending || categoryMutation.isPending || accountMutation.isPending;
     
 
     const onSubmit = (values: FormValues) => {
@@ -49,16 +71,24 @@ export const EditAccountSheet = () => {
 
     }
 
-    const defaultValues = accountQuery.data ? { name: accountQuery.data.data.name } : { name: '' };
+    const defaultValues = transactionQuery.data ? 
+    { accountId: transactionQuery.data.accountId, 
+        categoryId: transactionQuery.data.categoryId,
+        amount: transactionQuery.data.amount.toString(),
+        date: transactionQuery.data.date ? new Date(transactionQuery.data.date) : new Date(),
+        notes: transactionQuery.data.notes,
+        payee: transactionQuery.data.payee
+    } : 
+    { accountId: '', categoryId: '', amount: '', date: new Date(), notes: '', payee: '' };
     return (
         <>  
             <ConfirmDialog />
             <Sheet open={isOpen} onOpenChange={onClose}>
                 <SheetContent className="space-y-4">
                     <SheetHeader>
-                    <SheetTitle>Edit Account</SheetTitle>
+                    <SheetTitle>Edit Transaction</SheetTitle>
                     <SheetDescription>
-                    Edit an existing account
+                    Edit an existing transaction
                     </SheetDescription>
                     </SheetHeader>
                     {isLoading ? 
@@ -66,12 +96,17 @@ export const EditAccountSheet = () => {
                         <Loader2 className="size-4 animate-spin text-muted-foreground"/>
                     </div>)
                     :(
-                        <AccountForm 
+                        <TransactionForm
                         id={id} 
                         onSubmit={onSubmit} 
                         disabled={isPending} 
                         defaultValues={defaultValues} 
-                        onDelete={onDelete} />
+                        onDelete={onDelete}
+                        categoryOptions={categoryOptions}
+                        onCreateCategory={onCreateCategory}
+                        accountOptions={accountOptions}
+                        onCreateAccount={onCreateAccount}
+                         />
                     )}
                 </SheetContent>
             </Sheet>
