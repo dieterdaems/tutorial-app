@@ -12,7 +12,7 @@ export const useGetAccount= (id?: string) => {
                 throw new Error("Failed to fetch account");
             }
 
-            const data = await reponse.json();
+            const { data }  = await reponse.json();
             return data;
         } ,
     })

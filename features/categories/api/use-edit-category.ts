@@ -18,7 +18,8 @@ export const useEditCategory = (id?: string) => {
         onSuccess: () => {
             toast.success("Category updated successfully");
             queryClient.invalidateQueries({ queryKey: ['category', { id }] });
-            queryClient.invalidateQueries({ queryKey: ["categories"]}); //refetches categories every time a new category is created
+            queryClient.invalidateQueries({ queryKey: ["categories"]});
+            queryClient.invalidateQueries({ queryKey: ["transactions"]}); //refetches categories every time a new category is created
             // TODO also invalidate summary and transactions
         },
         onError: () => {

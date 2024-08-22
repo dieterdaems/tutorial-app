@@ -11,7 +11,7 @@ export const useGetCategories= () => {
                 throw new Error("Failed to fetch categories");
             }
 
-            const data = await reponse.json();
+            const { data } = await reponse.json();
             return data;
         } ,
     })
