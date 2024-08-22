@@ -48,7 +48,7 @@ export const EditCategorySheet = () => {
 
     }
 
-    const defaultValues = categoryQuery.data ? { name: categoryQuery.data.data.name } : { name: '' };
+    const defaultValues = categoryQuery.data ? { name: categoryQuery.data.name } : { name: '' };
     return (
         <>  
             <ConfirmDialog />
