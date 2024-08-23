@@ -44,12 +44,14 @@ export const Actions = ( {id}: Props) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuItem
+                    className="flex flex-row p-2 bg-white hover:text-white hover:bg-black cursor-pointer"
                     disabled={deleteMutation.isPending}
                     onClick={() => onOpen(id)}>
                         <Edit className="size-4 mr-2" />
                         Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
+                    className="flex flex-row p-2 bg-white hover:text-white hover:bg-black cursor-pointer"
                     disabled={deleteMutation.isPending}
                     onClick={onDelete}>
                         <Trash className="size-4 mr-2" />
