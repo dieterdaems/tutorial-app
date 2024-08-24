@@ -167,3 +167,5 @@ dist
 
 # Drizzle migrate files
 drizzle/*
+ing.csv
+kbc.csv
