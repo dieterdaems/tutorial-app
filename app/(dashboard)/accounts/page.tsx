@@ -14,7 +14,7 @@ const AccountsPage = () => {
     const newAccount = useNewAccount();
     const accountsQuery = useGetAccounts();
     const deleteAccounts = useBulkDeleteAccounts();
-    const accounts = accountsQuery.data?.data || [];
+    const accounts = accountsQuery.data || [];
 
     const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
 
