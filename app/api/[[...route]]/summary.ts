@@ -65,7 +65,7 @@ const app = new Hono()
                 return c.json({ error: "Unauthorized" }, 401);
             }
             const [currentPeriod] = await fetchFinancialData(auth.userId, startDate, endDate)
-            const [lastPeriod] = await fetchFinancialData(auth.userId, startDate, endDate)
+            const [lastPeriod] = await fetchFinancialData(auth.userId, lastPeriodSart, lastPeriodEnd)
 
             const incomeChange = calculatePercentage(currentPeriod.income, lastPeriod.income)
             const expenseChange = calculatePercentage(currentPeriod.expense, lastPeriod.expense)
